@@ -1,0 +1,53 @@
+---
+- name: Instalación de utilidades para actualizar
+  apt: 
+    name:
+      - apt-utils
+      - software-properties-common
+    state: present
+    update_cache: yes
+
+- name: Instalación de apache en Debian
+  apt: 
+    name:
+      - apache2
+      - apache2-bin
+      - apache2-data
+      - apache2-utils
+      - libapache2-mod-php7.3
+      - mysql-common
+      - php7.3
+      - php7.3-mysql
+      - php7.3-cli
+    state: latest 
+    update_cache: yes
+
+- name: Crear directorios
+  file:
+    path: "{{ document_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+
+
+- name: Copia de ficheros y directorios para la web
+  copy:
+    src: files/
+    dest: "{{ document_root }}"
+
+- name: Copia virtual host
+  template:
+    src: vhost.cfg.j2
+    dest: "/etc/apache2/sites-available/{{ site_name }}.conf"
+
+- name: Copia de fichero index.html
+  template:
+    src: index.html.j2
+    dest: "{{ document_root }}/index.html"
+
+- name: Habilitar sitio
+  command: "a2ensite {{ site_name }}.conf"
+
+- name: Deshabilitar dsito por defecto
+  command: a2dissite 000-default.conf

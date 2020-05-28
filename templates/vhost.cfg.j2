@@ -1,0 +1,15 @@
+NameVirtualHost {{ ansible_hostname }}:80
+
+<VirtualHost *:80>
+  ServerName {{ site_name }}
+  serverAlias www.{{ site_name}}.com
+DocumentRoot {{ document_root }}
+{% if server_admin is defined %}
+  ServerAdmin {{ server_admin }}
+{% endif %}
+  <Directory "{{ document_root }}">
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>

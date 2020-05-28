@@ -1,0 +1,10 @@
+---
+# - name: Enabled apache
+#   systemd: state=started name=httpd enabled=yes
+#   when: ansible_os_family == "RedHat"
+
+- name: restart apache
+  service: 
+    name: apache2
+    state: restarted
+  when: ansible_os_family == "Debian"

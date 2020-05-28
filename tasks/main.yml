@@ -1,0 +1,11 @@
+---
+- name: Include para distro Linux
+  include: "{{ ansible_os_family }}.yml"
+
+- name: Añadir vhost a /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ ansible_host }} {{ site_name }}"
+    state: present
+  notify:
+    - restart apache
