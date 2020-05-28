@@ -47,7 +47,10 @@
     dest: "{{ document_root }}/index.html"
 
 - name: Habilitar sitio
-  command: "a2ensite {{ site_name }}.conf"
+  stat:
+    path: "/etc/apache2/sites-enabled/{{ site_name }}.conf"
+    register: stat_result
 
-- name: Deshabilitar dsito por defecto
-  command: a2dissite 000-default.conf
+- name: Habilitar sitio
+  command: "a2ensite {{ site_name }}.conf"
+  when: not stat_result.stat.exists
