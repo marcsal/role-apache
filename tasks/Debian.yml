@@ -49,8 +49,8 @@
 - name: Habilitar sitio
   stat:
     path: "/etc/apache2/sites-enabled/{{ site_name }}.conf"
-    register: stat_result
+  register: result
 
 - name: Habilitar sitio
   command: "a2ensite {{ site_name }}.conf"
-  when: not stat_result.stat.exists
+  when: result.stat.exists == false
