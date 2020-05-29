@@ -19,7 +19,7 @@
       - php7.3
       - php7.3-mysql
       - php7.3-cli
-    state: latest 
+    state: present 
     update_cache: yes
 
 - name: Crear directorios
