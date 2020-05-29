@@ -46,11 +46,11 @@
     src: index.html.j2
     dest: "{{ document_root }}/index.html"
 
-- name: Habilitar sitio
+- name: Registrar si existe el sitio o no
   stat:
     path: "/etc/apache2/sites-enabled/{{ site_name }}.conf"
   register: result
 
 - name: Habilitar sitio
   command: "a2ensite {{ site_name }}.conf"
-  when: result.stat.exists == false
+  when: not result.stat.exists
